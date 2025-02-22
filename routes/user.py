@@ -5,24 +5,28 @@ user_bp = Blueprint('users', __name__)
 
 @user_bp.route('/', methods=['GET'])
 def index():
-    user = get_all_users()
-    return jsonify(user)
+    users = get_all_users()
+    return jsonify(users)
 
 @user_bp.route('/', methods=['POST'])
 def user_store():
     data = request.get_json()
-    email = data.get('email') 
     name = data.get('name')
-    print(f"NAME {name} --- email {email}")
-    new_user = create_user(name, email)
+    lastname = data.get('lastname')  # Capturar lastname
+    email = data.get('email')
+
+    print(f"NAME {name} --- LASTNAME {lastname} --- EMAIL {email}")
+    new_user = create_user(name, lastname, email)
     return jsonify(new_user)
 
 @user_bp.route('/<int:user_id>', methods=['PUT'])
 def user_update(user_id):
     data = request.get_json()
     name = data.get('name')
+    lastname = data.get('lastname')  # Capturar lastname
     email = data.get('email')
-    updated_user = update_user(user_id, name, email)
+
+    updated_user = update_user(user_id, name, lastname, email)
     return jsonify(updated_user)
 
 @user_bp.route('/<int:user_id>', methods=['DELETE'])
